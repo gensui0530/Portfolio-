@@ -1,0 +1,1293 @@
+//====================================
+//変数
+//====================================
+$font-color_default: rgb(218, 158, 79);
+$font-color_default_sub1: #fff;
+$color_corp: rgb(94, 60, 245);
+$background-color_default: rgb(0, 0, 0);
+$site-width: 980px;
+
+$font-size_s: 12px;
+$font-size_m: 14px;
+$font-size_default: 16px;
+$font-size_xl: 24px;
+$font-size_xxl: 30px;
+$font-size_3l: 38px;
+
+$space_s: 5px;
+$space_m: 10px;
+$space_l: 15px;
+$space_xl: 20px;
+$space_xxl: 30px;
+$space_3l: 40px;
+
+$font-family_corp: "Amiri", serif;
+$font-family_corp_sub1: "Shojumaru", cursive;
+$font-family_corp_sub2: "Ruda", sans-serif;
+
+$breakpoints: (
+  "sm": "screen and (max-width: 414px)",
+  "md": "screen and (max-width: 768px)",
+  "lg": "screen and (max-width: 1000px)",
+  "xl": "screen and (max-width: 1200px)"
+) !default;
+
+@mixin mq($breakpoint: sm) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+// ==================================
+// base
+// ==================================
+html,
+body {
+  width: 100%;
+  color: $font-color_default;
+  font-size: $font-size_default;
+  line-height: 1.6;
+  font-family: Quicksand, 游ゴシック体, "Yu Gothic", YuGothic, "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro",
+    メイリオ, Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; // TODO:リファクタ必要（変数にする）
+  text-size-adjust: 100%;
+  letter-spacing: 0.1em;
+  background: $background-color_default;
+}
+
+p,
+a {
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $font-color_default;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: $color_corp;
+  transition: 0.3s;
+}
+
+img {
+  width: 100%;
+  vertical-align: bottom;
+}
+
+// ==================================
+// header
+// ==================================
+.header {
+  box-sizing: border-box;
+  width: 100%;
+  height: 80px;
+  color: $font-color_default;
+  background: $background-color_default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: $space_xl;
+  padding-right: $space_xl;
+  position: fixed;
+  transition: 0.3s;
+  z-index: 3;
+  &.float-active {
+    transition: 0.3s;
+    background: rgba(0, 0, 0, 0);
+  }
+
+  @include mq() {
+    height: 60px;
+    padding-right: $space_l;
+    padding-left: $space_l;
+  }
+
+  .title {
+    font-size: $font-size_xxl;
+    font-family: $font-family_corp_sub1;
+    font-weight: bold;
+  }
+}
+// ==================================
+// menu
+// ==================================
+.nav-menu {
+  padding-top: $space_xxl;
+  @include mq($breakpoint: sm) {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: -100%;
+    background: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 100vh;
+    transition: 0.5s;
+    &.active {
+      transition: 0.5s;
+      transform: translateX(-100%);
+    }
+  }
+}
+.menu {
+  display: flex;
+  align-items: center;
+  font-size: $font-size_xxl;
+  font-family: $font-family_corp_sub2;
+  &-item {
+    margin-right: $space_xl;
+  }
+  &-link {
+    -webkit-font-smoothing: initial;
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  &-link::after {
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 2px;
+    background: rgb(163, 140, 226);
+    transform: scale(0, 1);
+    transform-origin: right top;
+    transition: transform 0.3s;
+  }
+  &-link:hover::after {
+    transform-origin: left top;
+    transform: scale(1, 1);
+  }
+
+  @include mq($breakpoint: sm) {
+    display: block;
+    font-size: $font-size_xl;
+    background: rgba(0, 0, 0, 0.7);
+    margin-top: $space_xxl;
+    height: 100%;
+
+    &-item {
+      margin-right: initial;
+    }
+    &-link {
+      -webkit-font-smoothing: initial;
+      padding: $space_l;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      text-decoration: none;
+      font-size: $font-size_3l;
+      width: 100%;
+      right: $space_s;
+    }
+    &-link::after {
+      background: black;
+    }
+    &-link:hover::after {
+      text-decoration: none;
+    }
+  }
+}
+
+.menu-trigger {
+  display: none;
+  @include mq($breakpoint: sm) {
+    display: inline-block;
+  }
+  transition: all 0.4s;
+  box-sizing: border-box;
+  position: relative;
+  width: 40px;
+  height: 32px;
+  z-index: 3;
+  span {
+    display: inline-block;
+    transition: all 0.4s;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: $font-color_default;
+    border-radius: 2px;
+    &:nth-of-type(1) {
+      top: 0;
+    }
+    &:nth-of-type(2) {
+      top: 16px;
+    }
+    &:nth-of-type(3) {
+      bottom: 0;
+    }
+  }
+  &.active span {
+    &:nth-of-type(1) {
+      transform: translateY(13px) rotate(-45deg);
+    }
+    &:nth-of-type(2) {
+      opacity: 0;
+    }
+    &:nth-of-type(3) {
+      transform: translateY(-15px) rotate(45deg);
+    }
+  }
+}
+
+.top-image {
+  position: relative;
+  min-height: 100%;
+  transform-style: preserve-3d;
+  margin-top: 320px;
+  width: 0%;
+}
+// ==================================
+// hero
+// ==================================
+.hero {
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include mq() {
+    width: 550px;
+    height: 600px;
+    margin-bottom: 30px;
+  }
+  &-title {
+    font-size: $font-size_3l;
+    font-family: $font-family_corp;
+    margin-top: 500px;
+    margin-left: 700px;
+    text-shadow: 0 0 20px rgba(227, 123, 137, 0.4), 0 0 50px rgba(0, 0, 0, 0.8);
+    @include mq() {
+      text-align: center;
+      font-size: $font-size_default;
+    }
+  }
+
+  &-main {
+    display: block;
+    font-size: $font-size_3l;
+    font-family: arial;
+    font-weight: bold;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  &-main &-title {
+    display: block;
+    width: inherit;
+    height: inherit;
+    font-size: $font-size_3l;
+    font-family: arial;
+    font-weight: bold;
+    left: 2px;
+    top: 0px;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    overflow: hidden;
+    animation-name: textBlink;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    @include mq() {
+      margin-left: 30px;
+      margin-top: 350px;
+      font-size: $font-size_xl;
+    }
+  }
+
+  &-shadow {
+    position: absolute;
+    width: inherit;
+    height: 40px;
+    overflow: hidden;
+    animation-name: shadowDown;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+  }
+
+  &-shadow &-viewport {
+    position: relative;
+    width: inherit;
+    height: 200px;
+  }
+
+  &-shadow &-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    animation-name: shadowTextUp;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes textBlink {
+    0% {
+      opacity: 1;
+      left: 2px;
+    }
+    30% {
+      opacity: 0.7;
+    }
+    70% {
+      opacity: 0.8;
+      left: -2px;
+    }
+    71% {
+      opacity: 0.8;
+      left: 0px;
+    }
+    75% {
+      opacity: 0.8;
+      left: 1px;
+    }
+    100% {
+      opacity: 7;
+      left: 0px;
+    }
+  }
+
+  @keyframes shadowDown {
+    0% {
+      top: 0px;
+    }
+    10% {
+      top: 20px;
+    }
+    20% {
+      top: 30px;
+    }
+    40% {
+      top: 35px;
+    }
+    60% {
+      top: 50px;
+    }
+    70% {
+      top: 20px;
+    }
+    100% {
+      top: 10px;
+    }
+  }
+
+  @keyframes shadowTextUp {
+    0% {
+      top: 0px;
+    }
+    10% {
+      top: -20px;
+      opacity: 0.5;
+    }
+    20% {
+      top: -30px;
+      opacity: 1;
+    }
+    40% {
+      top: -35px;
+    }
+    60% {
+      top: -50px;
+      opacity: 0.5;
+    }
+    70% {
+      top: -20px;
+    }
+    100% {
+      top: -10px;
+      opacity: 1;
+    }
+  }
+}
+@keyframes move {
+  100% {
+    transform: translate3d(0, 0, -1000px);
+  }
+}
+
+// ==================================
+// container
+// ==================================
+.container {
+  width: $site-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: $space_3l;
+  @include mq() {
+    width: 100%;
+  }
+
+  &-fluid {
+    width: 100%;
+  }
+  &-title {
+    font-family: $font-family_corp;
+    text-align: center;
+    font-size: $font-size_xxl;
+    margin-bottom: 50px;
+
+    @include mq() {
+      margin-bottom: 15px;
+    }
+  }
+
+  &-title_Pink {
+    color: rgb(240, 89, 245);
+    font-family: $font-family_corp_sub2;
+    text-align: left;
+    font-size: $font-size_xxl;
+
+    @include mq() {
+      font-size: $font-size_xl;
+    }
+  }
+
+  &-title_Green {
+    color: rgb(8, 235, 0);
+    font-family: $font-family_corp_sub2;
+    text-align: left;
+    font-size: $font-size_xxl;
+
+    @include mq() {
+      font-size: $font-size_xl;
+    }
+  }
+  &-title_Blue {
+    color: rgb(22, 57, 255);
+    font-family: $font-family_corp_sub2;
+    text-align: left;
+    font-size: $font-size_xxl;
+
+    @include mq() {
+      font-size: $font-size_xl;
+    }
+  }
+
+  &-title_Yellow {
+    color: rgb(212, 235, 5);
+    font-family: $font-family_corp_sub2;
+    text-align: left;
+    font-size: $font-size_xxl;
+
+    @include mq() {
+      font-size: $font-size_xl;
+    }
+  }
+
+  &-body {
+    @include mq() {
+      padding-left: $space_l;
+      padding-right: $space_l;
+    }
+  }
+
+  &-body_prof {
+    overflow: hidden;
+    position: relative;
+    opacity: 0;
+    transform: translate(-100px, 0);
+    transition: all 1500ms;
+    @include mq() {
+      transform: translate(-10px, 0);
+    }
+  }
+
+  &-mask {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    opacity: 0; /* マスクを表示しない */
+    background-color: rgba(0, 0, 0, 0);
+    -webkit-transition: all 0.8s ease;
+    transition: all 0.8s ease;
+    width: 40%;
+
+    @include mq() {
+      width: 100%;
+      top: 50px;
+    }
+  }
+
+  &-mask:hover {
+    opacity: 1; /* マスクを表示する */
+    padding-left: 250px; /* 右にずらす */
+
+    @include mq() {
+      padding-left: 10px;
+      background: black;
+      opacity: 0.8;
+    }
+  }
+
+  &-caption {
+    width: 25%;
+    margin-left: $space_3l;
+    font-size: $font-size_xl;
+    @include mq() {
+      width: 80%;
+      margin: 0;
+      font-size: $font-size_default;
+    }
+  }
+
+  &-face {
+    width: 25%;
+    border-radius: 50%;
+    border: 4px solid rgb(240, 89, 245);
+
+    @include mq() {
+      width: 45%;
+      font-size: $font-size_m;
+      margin-left: 85px;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  &-name {
+    margin-left: 40px;
+    margin-top: $space_m;
+    font-size: $font-size_xl;
+    @include mq() {
+      font-size: $font-size_default;
+      margin: 0;
+      text-align: center;
+      margin-bottom: $space_l;
+      margin-top: $space_l;
+    }
+  }
+
+  &-detail {
+    font-size: $font-size_default;
+    color: $font-color_default_sub1;
+    margin-left: 260px;
+    opacity: 0;
+    transform: translate(100px, 0);
+    transition: all 1500ms;
+    @include mq() {
+      font-size: $font-size_s;
+      margin: 0;
+      text-align: left;
+      letter-spacing: 0.05em;
+      transform: translate(10px, 0);
+    }
+  }
+}
+
+// ==================================
+// panel
+// ==================================
+.panel {
+  box-sizing: border-box;
+  position: relative;
+  transition: 0.5s;
+  &-hover {
+    display: inline-block;
+    transition: 0.5s;
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      transition: 0.5s;
+    }
+  }
+  &-border {
+    border-radius: 5px;
+    border: 1px solid $font-color_default_sub1;
+    width: 31.5%;
+    @include mq() {
+      width: 100%;
+    }
+  }
+  &-head,
+  &-foot {
+    padding: $space_m;
+  }
+  &-head {
+    text-align: center;
+    color: $color_corp;
+  }
+
+  &-detail {
+    color: $font-color_default_sub1;
+    overflow-wrap: break-word;
+    opacity: 0;
+    transform: translate(10px, 0);
+    transition: all 1500ms;
+    @include mq() {
+      font-size: $font-size_default;
+    }
+  }
+
+  &-group {
+    margin-right: -$space_xl;
+    @include mq() {
+      margin-right: -$space_l;
+    }
+
+    &-float {
+      overflow: hidden;
+    }
+    &-flex {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .panel {
+      float: left;
+      margin-right: $space_l;
+      margin-bottom: $space_l;
+      box-sizing: border-box;
+    }
+  }
+  &-cource {
+    width: calc(33.3% - #{$space_l});
+    @include mq() {
+      width: 100%;
+      margin: 0 auto $space_l auto;
+    }
+  }
+}
+
+//円グラフ
+
+//IT
+.pie-1 {
+  width: 200px;
+  height: 200px;
+  margin-left: 50px;
+  border-radius: 50%;
+  position: relative;
+  opacity: 0;
+  transform: translate(-30px, 0);
+  transition: all 1500ms;
+  background: rgb(0, 32, 3);
+  background-image: linear-gradient(to right, transparent 50%, rgb(8, 235, 0) 0);
+  &-per {
+    font-size: $font-size_3l;
+    font-family: $font-family_corp_sub2;
+    color: $font-color_default_sub1;
+    position: absolute;
+    top: 130px;
+    left: 120px;
+  }
+}
+.pie-1::before {
+  content: "";
+  display: block;
+  margin-left: 50%;
+  height: 100%;
+  border-radius: 0 100% 100% 0 / 50%;
+  background-color: rgb(0, 32, 3);
+  -webkit-transform-origin: left;
+  transform-origin: left;
+  -webkit-transform: rotate(145deg);
+  transform: rotate(145deg);
+}
+
+//Medical
+.pie-2 {
+  width: 200px;
+  height: 200px;
+  margin-left: 50px;
+  border-radius: 50%;
+  position: relative;
+  opacity: 0;
+  transform: translate(0, -30px);
+  transition: all 1500ms;
+  background: rgb(0, 32, 3);
+  background-image: linear-gradient(to right, transparent 50%, rgb(8, 235, 0) 50%);
+
+  &-per {
+    font-size: $font-size_3l;
+    font-family: $font-family_corp_sub2;
+    color: $font-color_default_sub1;
+    position: absolute;
+    top: 130px;
+    left: 120px;
+  }
+
+  @-webkit-keyframes spin {
+    100% {
+      -webkit-transform: rotate(0.5turn);
+      transform: rotate(0.5turn);
+    }
+  }
+  @keyframes spin {
+    100% {
+      -webkit-transform: rotate(0.5turn);
+      transform: rotate(0.5turn);
+    }
+  }
+  @-webkit-keyframes background {
+    50% {
+      background: rgb(8, 235, 0);
+    }
+  }
+  @keyframes background {
+    50% {
+      background: rgb(8, 235, 0);
+    }
+  }
+}
+
+.pie-2::before {
+  content: "";
+  display: block;
+  margin-left: 50%;
+  height: 100%;
+  background-color: inherit;
+  border-radius: 0 100% 100% 0 / 50%;
+  -webkit-transform-origin: left;
+  transform-origin: left;
+  -webkit-animation: spin 50s linear 2, background 100s step-end 1;
+  animation: spin 50s linear 2, background 100s step-end 1;
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+  -webkit-animation-delay: inherit;
+  animation-delay: inherit;
+}
+
+//English
+.pie-3 {
+  width: 200px;
+  height: 200px;
+  margin-left: 50px;
+  border-radius: 50%;
+  position: relative;
+  opacity: 0;
+  transform: translate(30px, 0);
+  transition: all 1500ms;
+  background-color: rgb(0, 32, 3);
+  background-image: linear-gradient(to right, transparent 50%, rgb(8, 235, 0) 0);
+  &-per {
+    font-size: $font-size_3l;
+    font-family: $font-family_corp_sub2;
+    color: $font-color_default_sub1;
+    position: absolute;
+    top: 130px;
+    left: 120px;
+  }
+}
+.pie-3::before {
+  content: "";
+  display: block;
+  margin-left: 50%;
+  height: 100%;
+  border-radius: 0 100% 100% 0 / 50%;
+  background-color: rgb(8, 235, 0);
+  -webkit-transform-origin: left;
+  transform-origin: left;
+  -webkit-transform: rotate(30deg);
+}
+
+//==================================
+//Product
+//==================================
+
+.product {
+  &-web {
+    opacity: 0;
+    transform: translate(-50px, 0);
+    transition: all 1500ms;
+    float: right;
+
+    @include mq() {
+      width: 100%;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+      display: flex;
+    }
+  }
+
+  &-img1 {
+    padding-left: $space_s;
+    margin-right: 60px;
+    width: 50%;
+    color: $font-color_default_sub1;
+    opacity: 0;
+    transform: translate(-50px, 0);
+    transition: all 1500ms;
+    float: left;
+    margin-top: $space_xxl;
+
+    @include mq() {
+      width: 100%;
+      clear: both;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+    }
+  }
+
+  &-obj {
+    opacity: 0;
+    transform: translate(50px, 0);
+    transition: all 1500ms;
+    float: left;
+    margin-top: $space_3l;
+    margin-left: $space_xl;
+
+    @include mq() {
+      width: 100%;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+      display: flex;
+    }
+  }
+  &-img2 {
+    padding-left: $space_3l;
+    color: $font-color_default_sub1;
+    width: 50%;
+    opacity: 0;
+    transform: translate(50px, 0);
+    transition: all 1500ms;
+    float: right;
+    margin-top: $space_xxl;
+
+    @include mq() {
+      width: 100%;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+      display: flex;
+    }
+  }
+
+  &-wp {
+    opacity: 0;
+    transform: translate(-50px, 0);
+    transition: all 1500ms;
+    float: right;
+    margin-top: $space_3l;
+
+    @include mq() {
+      width: 100%;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+      display: flex;
+    }
+  }
+
+  &-img3 {
+    margin-right: 60px;
+    color: $font-color_default_sub1;
+    width: 50%;
+    opacity: 0;
+    transform: translate(-50px, 0);
+    transition: all 1500ms;
+    float: left;
+    margin-top: $space_xxl;
+
+    @include mq() {
+      width: 100%;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+      display: flex;
+    }
+  }
+
+  &-fw {
+    opacity: 0;
+    transform: translate(50px, 0);
+    transition: all 1500ms;
+    float: left;
+    margin-top: $space_3l;
+    margin-left: $space_xl;
+
+    @include mq() {
+      width: 100%;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+      display: flex;
+    }
+  }
+
+  &-img4 {
+    padding-left: $space_3l;
+    color: $font-color_default_sub1;
+    width: 50%;
+    opacity: 0;
+    transform: translate(50px, 0);
+    transition: all 1500ms;
+    float: right;
+    margin-top: $space_xxl;
+
+    @include mq() {
+      width: 100%;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      transform: translate(0, -50px);
+      display: flex;
+    }
+  }
+
+  &-mov {
+    width: 100%;
+  }
+
+  &-btn {
+    font-family: $font-family_corp_sub2;
+    text-align: center;
+    padding-top: $space_xxl;
+    padding-bottom: $space_xxl;
+    background: #000;
+  }
+
+  &-btn-box {
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+    font-size: $font-size_default;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 24px;
+    position: relative;
+    border: 2px solid #fff;
+    transition: 0.4s;
+  }
+
+  &-btn-box:hover {
+    border: 2px solid transparent;
+    color: rgb(22, 57, 255);
+  }
+
+  &-btn-box:before,
+  &-btn-box:after {
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    transform: scale(0);
+    transition: 0.2s;
+  }
+
+  &-btn-box:before {
+    border-bottom: 2px solid rgb(22, 57, 255);
+    border-left: 2px solid rgb(22, 57, 255);
+    transform-origin: 100% 0%;
+  }
+
+  &-btn-box:after {
+    border-top: 2px solid rgb(22, 57, 255);
+    border-right: 2px solid rgb(22, 57, 255);
+    transform-origin: 0% 100%;
+  }
+
+  &-btn-box:hover:after,
+  &-btn-box:hover:before {
+    transform: scale(1);
+  }
+
+  &-btn-close {
+    margin-left: 280px;
+    margin-top: $space_m;
+    @include mq() {
+      margin-left: 75px;
+    }
+  }
+  &-detail {
+    line-height: 1.6;
+    color: $font-color_default_sub1;
+
+    @include mq() {
+      width: 100%;
+      font-size: $font-size_default;
+    }
+  }
+}
+
+// ==================================
+// Contact
+// ==================================
+
+.form {
+  width: 100%;
+  opacity: 0;
+  transform: translate(80px, 0);
+  transition: all 1500ms;
+  @include mq() {
+    transform: translate(20px, 0);
+  }
+  &-m {
+    width: 60%;
+    @include mq() {
+      width: 100%;
+    }
+  }
+}
+
+.underline {
+  width: 590px;
+  height: 1px;
+  background: rgb(212, 235, 5);
+  transform-origin: center center;
+  transform: scaleX(0);
+  transition: transform 0.18s ease-out;
+  @include mq() {
+    width: 345px;
+  }
+}
+
+.input {
+  display: block;
+  background: #000;
+  border: none;
+  outline: 0;
+  border-bottom: 1px solid rgb(255, 255, 255);
+  height: 60px;
+  font-size: $font-size_m;
+  color: $font-color_default;
+  box-sizing: border-box;
+  &-l {
+    padding: 5px 10px;
+    width: 100%;
+  }
+
+  &-textarea {
+    height: 80px;
+    outline: 0;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    resize: none;
+    font-size: $font-size_m;
+  }
+
+  &:focus {
+    border: none;
+  }
+  &:focus + .underline {
+    transform: scaleX(1);
+  }
+}
+::placeholder {
+  color: $font-color_default_sub1;
+  font-size: $font-size_m;
+}
+
+.btn {
+  &-contact {
+    background: none;
+    border: 0;
+    box-sizing: border-box;
+    margin-top: $space_xl;
+    margin-left: 470px;
+    padding: 1em 2em;
+    box-shadow: inset 0 0 0 2px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    font-size: inherit;
+    position: relative;
+    vertical-align: middle;
+    font-family: $font-family_corp_sub2;
+
+    @include mq() {
+      margin-left: 220px;
+      margin-top: $space_xl;
+      margin-bottom: $space_3l;
+    }
+
+    &::before,
+    &::after {
+      box-sizing: inherit;
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &-draw {
+    transition: color 0.25s;
+
+    &::before,
+    &::after {
+      // Set border to invisible, so we don't see a 4px border on a 0x0 element before the transition starts
+      border: 2px solid transparent;
+      width: 0;
+      height: 0;
+    }
+
+    // This covers the top & right borders (expands right, then down)
+    &::before {
+      top: 0;
+      left: 0;
+    }
+
+    // And this the bottom & left borders (expands left, then up)
+    &::after {
+      bottom: 0;
+      right: 0;
+    }
+
+    &:hover {
+      color: rgb(212, 235, 5);
+    }
+
+    // Hover styles
+    &:hover::before,
+    &:hover::after {
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover::before {
+      border-top-color: rgb(212, 235, 5); // Make borders visible
+      border-right-color: rgb(212, 235, 5);
+      transition: width 0.25s ease-out,
+        // Width expands first
+          height 0.25s ease-out 0.25s; // And then height
+    }
+
+    &:hover::after {
+      border-bottom-color: rgb(212, 235, 5); // Make borders visible
+      border-left-color: rgb(212, 235, 5);
+      transition: border-color 0s ease-out 0.5s,
+        // Wait for ::before to finish before showing border
+          width 0.25s ease-out 0.5s,
+        // And then exanding width
+          height 0.25s ease-out 0.75s; // And finally height
+    }
+  }
+}
+
+// ==================================
+// footer
+// ==================================
+.footer {
+  color: $font-color_default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+
+  @include mq() {
+    font-size: 10px;
+  }
+}
+
+//==================================
+// Utility
+// ==================================
+.modal {
+  display: none;
+  width: 55%;
+  height: 85%;
+  background: $background-color_default;
+  padding: 15px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 2080px;
+  z-index: 2;
+  right: 320px;
+  @include mq() {
+    margin-top: 100px;
+    right: 0px;
+    width: 100%;
+    height: 70%;
+    top: 2830px;
+  }
+
+  &-title {
+    text-align: center;
+    font-size: $font-size_xl;
+    margin-bottom: $space_l;
+    font-family: $font-family_corp_sub2;
+  }
+}
+
+.cover {
+  background: rgb(28, 28, 29);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 2000px;
+  left: 0;
+  display: none;
+  z-index: 1;
+  @include mq() {
+    top: 2800px;
+    height: 120%;
+  }
+}
+
+.ft-corp {
+  font-weight: bold;
+  font-family: $font-family_corp_sub2;
+  color: $font-color_default;
+  text-align: center;
+  margin-top: $space_xl;
+
+  @include mq() {
+    margin-top: $space_m;
+  }
+}
+
+.ft-l {
+  font-size: $font-size_xl;
+}
+
+.clear-float {
+  clear: both;
+  padding-top: $space_3l;
+}
+.scrollin {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.order1 {
+  @include mq() {
+    order: 1;
+  }
+}
+
+.order2 {
+  @include mq() {
+    order: 2;
+  }
+}
+
+.order3 {
+  @include mq() {
+    order: 3;
+  }
+}
+
+.order4 {
+  @include mq() {
+    order: 4;
+  }
+}
+
+.fa-github {
+  font-size: $font-size_xl;
+  margin-left: 370px;
+  margin-top: $space_l;
+  margin-bottom: $space_m;
+  @include mq() {
+    margin-left: 160px;
+  }
+}
